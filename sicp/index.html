@@ -3,17 +3,21 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>SICP</title>
+<script src="jquery-2.1.3.min.js"></script>
+<script src="sicp.js"></script>
+<script src="index.js"></script>
 </head>
 <body>
-Hello World
 
 <table>
 	<tr>
 		<td>
-			<p>Import</p>
+			 <input id="sicp.web_import_button" type="button" value="Import From Web">
+			 <input id="sicp.web_import_text" type="text" value="">
 		</td>
 		<td>
-			<p>Run</p>
+			 <input id="sicp.local_import_button" type="button" value="Import Local File">
+			 <input id="sicp.local_import_file" type="file">
 		</td>
 	</tr>
 	<tr>
@@ -21,7 +25,15 @@ Hello World
 			<p>Code:</p>
 		</td>
 		<td>
-			<p>Output:</p>
+			<p><input id="sicp.run_button" type="button" value="Run"> Output:</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<textarea id="sicp.code_textarea" rows="40" cols="80">Code Text</textarea>
+		</td>
+		<td>
+			<textarea id="sicp.output_textarea" rows="40" cols="80" disabled>Output Text</textarea>
 		</td>
 	</tr>
 	
