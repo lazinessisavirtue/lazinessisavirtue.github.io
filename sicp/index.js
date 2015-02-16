@@ -43,7 +43,9 @@ $(document).ready(function () {
 	
 	$("#sicp\\.run_button").click(function () {
 		try {
-			$("#sicp\\.output_textarea").val(eval($("#sicp\\.code_textarea").val()));
+			var output = eval($("#sicp\\.code_textarea").val());
+			console.log(output);
+			$("#sicp\\.output_textarea").val(output);
 		} catch (e) {
 			console.log(e);
 			$("#sicp\\.output_textarea").val(e);
