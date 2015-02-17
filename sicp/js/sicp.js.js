@@ -1,13 +1,18 @@
 (function (window) {
 	
+	util = {
+		arrayOf: function (a) {
+			return Array.prototype.slice.apply(a);
+		}
+	};
+	
 	var sicp = function () {
 		if (arguments.length == 0) {
 			return sicp.list();
 		} else if (arguments.length == 1 && typeof arguments[0] == 'string') {
-			return sicp.get.apply(this, arguments);
-		} else if (arguments.length = 3 && typeof arguments[0] == 'string'
-			&& typeof arguments[1] == 'function'
-			&& arguments[2] instanceof Array) {
+			return sicp.get.apply(this, util.arrayOf(arguments));
+		} else if (arguments.length == 2 && typeof arguments[0] == 'string'
+			&& typeof arguments[1] == 'function') {
 			return sicp.build.apply(this, arguments);
 		} else {
 			console.log(arguments);
@@ -26,19 +31,18 @@
 	};
 
 	sicp.build = function (key, procedure, args) {
-		sicp.map[key] = function () {
-			return procedure.apply(this, arguments)
+		var entry = function () {
+			return procedure.apply(this, arguments);
 		}
-		sicp.map[key].key = key;
-		sicp.map[key].args = args;
-		sicp.map[key].output = sicp.map[key](args);
-		return sicp.map[key].output;
+		entry.key = key;
+		sicp.map[key] = entry;
+		return entry;
 	};
 
 	sicp.get = function (key) {
 		return sicp.map[key];
 	};
 	
-	window.sicp = sicp;
+	window.sicp = window.sicp_js = sicp;
 	
 } (typeof window !== "undefined" ? window : this));
