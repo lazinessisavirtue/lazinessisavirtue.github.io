@@ -30,7 +30,7 @@
 		return l;
 	};
 
-	sicp.build = function (key, procedure, args) {
+	sicp.build = function (key, procedure) {
 		var entry = function () {
 			return procedure.apply(this, arguments);
 		}
