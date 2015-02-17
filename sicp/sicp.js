@@ -1,9 +1,9 @@
 (function (window) {
 	
 	var sicp = function () {
-		if (arguments.length = 0) {
+		if (arguments.length == 0) {
 			return sicp.list();
-		} else if (arguments.length = 1 && typeof arguments[0] == 'string') {
+		} else if (arguments.length == 1 && typeof arguments[0] == 'string') {
 			return sicp.get.apply(this, arguments);
 		} else if (arguments.length = 3 && typeof arguments[0] == 'string'
 			&& typeof arguments[1] == 'function'
