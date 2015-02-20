@@ -28,7 +28,7 @@
 		sicp.define = function (key, procedure) {
 			var entry = function () {
 				return procedure.apply(entry.sicp, arguments);
-			}
+			};
 			entry.key = key;
 			entry.sicp = sicpFactory(sicp.map);
 			sicp.map[key] = entry;

@@ -1,7 +1,7 @@
 sicp("1.3", function (a, b, c) {
 	this("sum-of-squares", function (a, b) {
 		return a * a + b * b;
-	})
+	});
 	
 	if (a > b) {
 		if (b > c) {
