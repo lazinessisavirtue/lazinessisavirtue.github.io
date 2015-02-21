@@ -1,13 +1,12 @@
 (function (window) {
 	
-	function sicpFactory(scope) {
+	function sicpFactory(parentScope) {
 		var sicp = function () {
-			if (arguments.length == 0) {
+			if (arguments.length === 0) {
 				return sicp.list();
-			} else if (arguments.length == 1 && typeof arguments[0] == 'string') {
+			} else if (arguments.length === 1 && typeof arguments[0] === "string") {
 				return sicp.get.apply(this, arguments);
-			} else if (arguments.length == 2 && typeof arguments[0] == 'string'
-				&& typeof arguments[1] == 'function') {
+			} else if (arguments.length === 2 && typeof arguments[0] === "string") {
 				return sicp.define.apply(this, arguments);
 			} else {
 				console.log(arguments);
@@ -15,39 +14,37 @@
 			}
 		};
 		
-		sicp.map = Object.create(scope);
+		sicp.scope = Object.create(parentScope);
 
 		sicp.list = function () {
 			var l = [];
-			for (var k in sicp.map) {
+			for (var k in sicp.scope) {
 				l.push(k);
 			}
 			return l;
 		};
 
-		sicp.define = function (key, procedure) {
-			var entry = function () {
-				return procedure.apply(entry.sicp, arguments);
+		sicp.define = function (key, value) {
+			var entry = (typeof value === "function") ? function () {
+				return value.apply(sicpFactory(sicp.scope), arguments);
+			} : function () {
+				return value;
 			};
+			entry.value = value;
 			entry.key = key;
-			entry.sicp = sicpFactory(sicp.map);
-			sicp.map[key] = entry;
+			entry.sicp = sicpFactory(sicp.scope);
+			sicp.scope[key] = entry;
 			return entry;
 		};
 
 		sicp.get = function (key) {
-			return sicp.map[key];
+			return sicp.scope[key];
 		};
 		
 		return sicp;
 	}
 	
-	window.sicp_js = sicpFactory(null);
-	if (window.sicp) {
-		window.sicp.js = window.sicp_js;
-	} else {
-		window.sicp = window.sicp_js;
-		window.sicp.js = window.sicp_js;
-	}
+	window.sicpJs = window.sicpJs || sicpFactory(null);
+	window.sicp = window.sicp || window.sicpJs;
 	
 } (typeof window !== "undefined" ? window : this));
