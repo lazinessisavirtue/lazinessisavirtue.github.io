@@ -1,4 +1,11 @@
 $(document).ready(function () {
+	
+	window.sicp = window.sicp || {};
+	if (window.sicp.page) {
+		throw new Error("Multiple page initialization");
+	}
+	window.sicp.page = {};
+	
 	$("#sicp\\.web_import_button").click(function () {
 		$.ajax($("#sicp\\.web_import_text").val(), {
 			dataType: "text",
@@ -42,13 +49,13 @@ $(document).ready(function () {
 	}
 	
 	$("#sicp\\.run_button").click(function () {
+		window.sicp.page.code = $("#sicp\\.code_textarea").val();
 		try {
-			var output = eval($("#sicp\\.code_textarea").val());
-			console.log(output);
-			$("#sicp\\.output_textarea").val(output);
+			window.sicp.page.output = eval(window.sicp.page.code);
 		} catch (e) {
-			console.log(e);
-			$("#sicp\\.output_textarea").val(e);
+			window.sicp.page.output = e;
 		}
+		console.log(window.sicp.page.output);
+		$("#sicp\\.output_textarea").val(window.sicp.page.output);
 	});
 });

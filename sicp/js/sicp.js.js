@@ -3,14 +3,14 @@
 	function sicpFactory(parentScope) {
 		var sicp = function () {
 			if (arguments.length === 0) {
-				return sicp.list();
+				return arguments.callee.list();
 			} else if (arguments.length === 1 && typeof arguments[0] === "string") {
-				return sicp.get.apply(this, arguments);
+				return arguments.callee.get.apply(arguments.callee, arguments);
 			} else if (arguments.length === 2 && typeof arguments[0] === "string") {
-				return sicp.define.apply(this, arguments);
+				return arguments.callee.define.apply(arguments.callee, arguments);
 			} else {
 				console.log(arguments);
-				throw "unrecognizable arguments";
+				throw new Error("Unrecognizable arguments");
 			}
 		};
 		
@@ -18,13 +18,21 @@
 
 		sicp.list = function () {
 			var l = [];
-			for (var k in sicp.scope) {
+			for (var k in this.scope) {
 				l.push(k);
 			}
 			return l;
 		};
 
 		sicp.define = function (key, value) {
+			if (key in this.scope) {
+				if (value === this.scope[key].value) {
+					return this.scope[key];
+				} else {
+					console.log("Overwriting definition [" + key + "]");
+				}
+			}
+			
 			var entry = (typeof value === "function") ? function () {
 				return value.apply(sicpFactory(sicp.scope), arguments);
 			} : function () {
@@ -32,8 +40,8 @@
 			};
 			entry.value = value;
 			entry.key = key;
-			entry.sicp = sicpFactory(sicp.scope);
-			sicp.scope[key] = entry;
+			entry.sicp = sicpFactory(this.scope);
+			this.scope[key] = entry;
 			return entry;
 		};
 
@@ -43,8 +51,8 @@
 		
 		return sicp;
 	}
-	
-	window.sicpJs = window.sicpJs || sicpFactory(null);
-	window.sicp = window.sicp || window.sicpJs;
+
+	window.sicp = window.sicp || {};
+	window.sicp.js = window.sicp.js || sicpFactory(null);
 	
 } (typeof window !== "undefined" ? window : this));

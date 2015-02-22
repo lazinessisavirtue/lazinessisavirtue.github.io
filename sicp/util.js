@@ -23,12 +23,12 @@
 				if (type in util.knowTypes) {
 					return typeof value === type;
 				} else {
-					throw "Unknown type string [" + type + "]";
+					throw new Error("Unknown type string [" + type + "]");
 				}
 			} else if (typeof type === "function") {
 				return value instanceof type;
 			} else {
-				throw "Unknown type with type [" + typeof type + "]";
+				throw new Error("Unknown type with type [" + typeof type + "]");
 			}
 		};
 
