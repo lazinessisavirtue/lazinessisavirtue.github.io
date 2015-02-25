@@ -7,7 +7,10 @@
 			} else if (arguments.length === 1 && typeof arguments[0] === "string") {
 				return arguments.callee.get.apply(arguments.callee, arguments);
 			} else if (arguments.length === 2 && typeof arguments[0] === "string") {
-				return arguments.callee.define.apply(arguments.callee, arguments);
+				return arguments.callee.defineValue.apply(arguments.callee, arguments);
+			} else if (arguments.length === 3 && typeof arguments[0] === "string"
+					&& arguments[1] instanceof Array && typeof arguments[2] === "function") {
+				return arguments.callee.defineFunction.apply(arguments.callee, arguments);
 			} else {
 				console.log(arguments);
 				throw new Error("Unrecognizable arguments");
@@ -24,7 +27,7 @@
 			return l;
 		};
 
-		sicp.define = function (key, value) {
+		sicp.defineValue = function (key, value) {
 			if (key in this.scope) {
 				if (value === this.scope[key].value) {
 					return this.scope[key];
@@ -33,16 +36,30 @@
 				}
 			}
 			
-			var entry = (typeof value === "function") ? function () {
-				return value.apply(sicpFactory(sicp.scope), arguments);
-			} : function () {
-				return value;
-			};
-			entry.value = value;
-			entry.key = key;
-			entry.sicp = sicpFactory(this.scope);
-			this.scope[key] = entry;
-			return entry;
+			return this.scope[key] = value;
+		};
+
+		sicp.defineFunction = function (key, args, func) {
+			if (key in this.scope) {
+				if (typeof this.scope[key] === "function"
+						&& args === this.scope[key].args
+						&& func === this.scope[key].func) {
+					return this.scope[key];
+				} else {
+					console.log("Overwriting definition [" + key + "]");
+				}
+			}
+			
+			var entry = function () {
+				var sub = sicpFactory(sicp.scope);
+				for (var i = 0; i < args.length; i++) {
+					sub(args[i], arguments[i]);
+				}
+				return func.apply(sub, arguments);
+			}
+			entry.args = args;
+			entry.func = func;
+			return this.scope[key] = entry;
 		};
 
 		sicp.get = function (key) {

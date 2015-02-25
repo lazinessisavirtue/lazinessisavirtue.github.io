@@ -1,28 +1,29 @@
 (function () {
 
-	this("product-recursive", function (term, a, next, b) {
-		if (a > b) {
+	this("product-recursive", ["term", "a", "next", "b"], function () {
+		if (this("a") > this("b")) {
 			return 1;
 		} else {
-			return term(a) * this("product-recursive")(term, next(a), next, b);
+			return this("term")(this("a")) *
+				this("product-recursive")(this("term"), this("next")(this("a")), this("next"), this("b"));
 		}
 	});
 	
-	this("factorial-recursive", function (n) {
-		this("identity", function (x) { return x; });
-		this("inc", function (x) { return x + 1; });
-		return this("product-recursive")(this("identity"), 1, this("inc"), n);
+	this("factorial-recursive", ["n"], function () {
+		this("identity", ["x"], function () { return this("x"); });
+		this("inc", ["x"], function () { return this("x") + 1; });
+		return this("product-recursive")(this("identity"), 1, this("inc"), this("n"));
 	});
 	
-	return this("1.31a", function (n) {
-		this("pi/4-term", function (a) {
-			return (a - 1) / a * (a + 1) / a ;
+	return this("1.31a", ["n"], function () {
+		this("pi/4-term", ["a"], function () {
+			return (this("a") - 1) / this("a") * (this("a") + 1) / this("a");
 		});
-		this("pi/4-next", function (a) {
-			return a + 2;
+		this("pi/4-next", ["a"], function () {
+			return this("a") + 2;
 		});
 		
-		return this("product-recursive")(this("pi/4-term"), 3, this("pi/4-next"), n);
+		return this("product-recursive")(this("pi/4-term"), 3, this("pi/4-next"), this("n"));
 	});
 
 }).apply(sicp.js)(100);
