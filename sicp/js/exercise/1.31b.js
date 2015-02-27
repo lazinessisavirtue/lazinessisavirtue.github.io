@@ -1,26 +1,30 @@
-sicp("1.31b", function (n) {
+(function (sicp) {
+	
 	sicp("product-iterative", function (term, a, next, b) {
-		this("iter", function (a, result) {
+		function iter(a, result) {
 			if (a > b) {
 				return result;
 			} else {
-				return this("iter")(next(a), result * term(a));
+				return iter(next(a), result * term(a));
 			}
-		});
-		return this("iter")(a, 1);
+		}
+		return iter(a, 1);
 	});
 	
 	sicp("factorial-iterative", function (n) {
-		this("identity", function (x) { return x; });
-		this("inc", function (x) { return x + 1; });
-		return this("product-iterative")(this("identity"), 1, this("inc"), n);
+		function identity(x) { return x; }
+		function inc(x) { return x + 1; }
+		return sicp("product-iterative")(identity, 1, inc, n);
 	});
 	
-	this("pi/4-term", function (a) {
-		return (a - 1) / a * (a + 1) / a ;
+	return sicp("1.31b", function (n) {
+		function pi4term(a) {
+			return (a - 1) / a * (a + 1) / a ;
+		}
+		function pi4next(a) {
+			return a + 2;
+		}
+		return sicp("product-iterative")(pi4term, 3, pi4next, n);
 	});
-	this("pi/4-next", function (a) {
-		return a + 2;
-	});
-	return this("product-iterative")(this("pi/4-term"), 3, this("pi/4-next"), n);
-})(100);
+	
+})(sicp.js)(1000);
