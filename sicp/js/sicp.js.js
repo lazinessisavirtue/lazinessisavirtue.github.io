@@ -29,10 +29,14 @@
 
 		sicp.defineValue = function (key, value) {
 			if (key in this.scope) {
-				if (value === this.scope[key].value) {
-					return this.scope[key];
+				if (this.scope.hasOwnProperty(key)) {
+					if (value === this.scope[key].value) {
+						return this.scope[key];
+					} else {
+						console.warn("Overwriting definition [" + key + "] with value");
+					}
 				} else {
-					console.log("Overwriting definition [" + key + "]");
+					console.log("Overriding definition [" + key + "] with value");
 				}
 			}
 			
@@ -41,12 +45,16 @@
 
 		sicp.defineFunction = function (key, args, func) {
 			if (key in this.scope) {
-				if (typeof this.scope[key] === "function"
-						&& args === this.scope[key].args
-						&& func === this.scope[key].func) {
-					return this.scope[key];
+				if (this.scope.hasOwnProperty(key)) {
+					if (typeof this.scope[key] === "function"
+							&& args === this.scope[key].args
+							&& func === this.scope[key].func) {
+						return this.scope[key];
+					} else {
+						console.warn("Overwriting definition [" + key + "] with function");
+					}
 				} else {
-					console.log("Overwriting definition [" + key + "]");
+					console.log("Overriding definition [" + key + "] with function");
 				}
 			}
 			
@@ -69,7 +77,7 @@
 		return sicp;
 	}
 
-	window.sicp = window.sicp || {};
-	window.sicp.js = window.sicp.js || sicpFactory(null);
+	window.sicp || (window.sicp = {});
+	window.sicp.js || (window.sicp.js = sicpFactory({}));
 	
 } (typeof window !== "undefined" ? window : this));
