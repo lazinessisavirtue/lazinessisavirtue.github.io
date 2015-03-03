@@ -79,5 +79,6 @@
 
 	window.sicp || (window.sicp = {});
 	window.sicp.js || (window.sicp.js = sicpFactory({}));
+	window.sicp.$ || (window.sicp.$ = {});
 	
 } (typeof window !== "undefined" ? window : this));
