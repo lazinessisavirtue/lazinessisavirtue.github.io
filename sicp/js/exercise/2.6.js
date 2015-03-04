@@ -17,8 +17,11 @@
 	sicp.addToN = function (n) {
 		return (n === 0) ? sicp.zero : sicp.add1(sicp.addToN(n - 1));
 	};
-
-	return sicp.addToN(10)(function (x) { return x * 2; })(3);
+	
+	return [
+			sicp.addToN(10)(function (x) { return x * 2; })(3),
+			sicp.addToN(100)(function (x) { return 1 + 1 / x; })(4)
+	];
 	
 })(sicp.$);
 
