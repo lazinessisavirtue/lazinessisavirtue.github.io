@@ -1,7 +1,7 @@
 (function (sicp) {
 	
 	sicp.gcd = function (a, b) {
-		return b ? gcd(b, a % b) : a;
+		return b ? sicp.gcd(b, a % b) : a;
 	};
 	
 	sicp.makeRat = function (n, d) {
