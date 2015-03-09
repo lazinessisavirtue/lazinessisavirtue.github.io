@@ -13,6 +13,14 @@
 			};
 		};
 	};
+	
+	church.add = function (n, m) {
+		return function (f) {
+			return function (x) {
+				return m(f)(n(f)(x));
+			};
+		};
+	};
 
 	church.getN = function (n) {
 		return (n === 0) ? church.zero : church.add1(church.getN(n - 1));
@@ -20,7 +28,11 @@
 	
 	return [
 			church.getN(10)(function (x) { return x * 2; })(3),
-			church.getN(100)(function (x) { return 1 + 1 / x; })(4)
+			church.getN(100)(function (x) { return 1 + 1 / x; })(4),
+			church.add(church.getN(4), church.getN(6))(
+					function (x) { return x * 2; })(3),
+			church.add(church.getN(36), church.getN(64))(
+					function (x) { return 1 + 1 / x; })(4),
 	];
 	
 })(sicp.$.church = Object.create(null));
