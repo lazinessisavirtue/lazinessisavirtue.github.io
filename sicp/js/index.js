@@ -1,8 +1,9 @@
 $(document).ready(function () {
+
+	window.sicp || (window.sicp = Object.create(null));
 	
-	window.sicp = window.sicp || {};
 	if (window.sicp.page) {
-		throw new Error("Multiple page initialization");
+		throw new Error("Multiple sicp.page initialization");
 	}
 	window.sicp.page = {};
 	
@@ -31,7 +32,7 @@ $(document).ready(function () {
 			if (files.length == 0) {
 				alert('No file selected');
 			} else if (files.length > 1) {
-				alert('Code Error: Multiple file selected, should only allow one');
+				alert('Code Error: MULTIPLE file selected');
 			} else {
 				var reader = new FileReader();
 				reader.onload = function (event) {
@@ -44,7 +45,7 @@ $(document).ready(function () {
 	} else {
 		$("#sicp\\.local_import_file").prop('disabled', true);
 		$("#sicp\\.local_import_button").click(function () {
-			alert('The Local File APIs are not fully supported in this browser.');
+			alert('The Local File APIs are not supported in this browser.');
 		})
 	}
 	

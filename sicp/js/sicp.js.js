@@ -29,7 +29,7 @@
 
 		sicp.defineValue = function (key, value) {
 			if (key in this.scope) {
-				if (this.scope.hasOwnProperty(key)) {
+				if (Object.prototype.hasOwnProperty.call(this.scope, key)) {
 					if (value === this.scope[key].value) {
 						return this.scope[key];
 					} else {
@@ -45,7 +45,7 @@
 
 		sicp.defineFunction = function (key, args, func) {
 			if (key in this.scope) {
-				if (this.scope.hasOwnProperty(key)) {
+				if (Object.prototype.hasOwnProperty.call(this.scope, key)) {
 					if (typeof this.scope[key] === "function"
 							&& args === this.scope[key].args
 							&& func === this.scope[key].func) {
@@ -77,8 +77,8 @@
 		return sicp;
 	}
 
-	window.sicp || (window.sicp = {});
-	window.sicp.js || (window.sicp.js = sicpFactory({}));
-	window.sicp.$ || (window.sicp.$ = {});
+	window.sicp || (window.sicp = Object.create(null));
+	window.sicp.js || (window.sicp.js = sicpFactory(null));
+	window.sicp.$ || (window.sicp.$ = Object.create(null));
 	
 } (typeof window !== "undefined" ? window : this));

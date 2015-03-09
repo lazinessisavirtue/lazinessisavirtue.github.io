@@ -1,12 +1,12 @@
-(function (sicp) {
+(function (church) {
 	
-	sicp.zero = function (f) {
+	church.zero = function (f) {
 		return function (x) {
 			return x;
 		};
 	};
 	
-	sicp.add1 = function (n) {
+	church.add1 = function (n) {
 		return function (f) {
 			return function (x) {
 				return f(n(f)(x));
@@ -14,27 +14,27 @@
 		};
 	};
 
-	sicp.addToN = function (n) {
-		return (n === 0) ? sicp.zero : sicp.add1(sicp.addToN(n - 1));
+	church.getN = function (n) {
+		return (n === 0) ? church.zero : church.add1(church.getN(n - 1));
 	};
 	
 	return [
-			sicp.addToN(10)(function (x) { return x * 2; })(3),
-			sicp.addToN(100)(function (x) { return 1 + 1 / x; })(4)
+			church.getN(10)(function (x) { return x * 2; })(3),
+			church.getN(100)(function (x) { return 1 + 1 / x; })(4)
 	];
 	
-})(sicp.$);
+})(sicp.$.church = Object.create(null));
 
 /*
-	Proof by Induction: addToN(n)(f)(x) = f^n(x)
+	Proof by Induction: getN(n)(f)(x) = f^n(x)
 	
-	Base case: addToN(0)(f)(x) = zero = f^0(x)
+	Base case: getN(0)(f)(x) = zero(f)(x) = x = id(x) = f^0(x)
 	
 	Inductive Step:
-		Assume: addToN(n)(f)(x) = f^n(x)
-		Then: addToN(n + 1)(f)(x)
-			= add1(addToN(n))(f)(x)
-			= f(addToN(n)(f)(x))
+		Assume: getN(n)(f)(x) = f^n(x)
+		Then: getN(n + 1)(f)(x)
+			= add1(getN(n))(f)(x)
+			= f(getN(n)(f)(x))
 			= f(f^n(x))
 			= f^(n + 1)(x)
 */
